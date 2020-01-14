@@ -33,44 +33,43 @@ class PortletMainView extends VerticalLayout implements WorkflowRunInfoListViewM
         TextField labelField = new TextField()
         labelField.setValue("Value")
 
-        TextField labelField2 = new TextField()
-        labelField.setValue("Value2")
-
         // "Read in" (Dummy) Data from Database
 
         Dummydata Dummydatamaker = new Dummydata()
         List dummydata = Dummydatamaker.datagen()
 
-        // List to test if dummy data was imported
-
         List namelist = []
         for (item in dummydata){
             namelist.add(item.getRunName())
         }
+        // List all Names from Object as a Test if Data was read in successfully
 
         ListSelect<String> select = new ListSelect<>("The List")
         select.setItems(namelist)
-        select.setRows(5)
-        this.addComponent(select)
+        select.setRows(20)
 
-        VerticalLayout tablayout1 = new VerticalLayout()
-        WorkflowRunTab tabsheetmaker = new WorkflowRunTab()
-        HorizontalLayout tablayout2 = new HorizontalLayout();
+        // Create Grid as Table for WorkflowDashboard
 
         WorkflowRunListGrid Gridmaker = new WorkflowRunListGrid()
         Grid grid = Gridmaker.createGrid(dummydata)
 
-        // Add Grid to Layout
-        //this.addComponent(grid)
+        // Create Layouts to put the individual elements into
 
-        TabSheet tabsheet = tabsheetmaker.generatetabs(tablayout2, grid, "WorkflowBoard")
-        tabsheetmaker.generatetabs(tablayout1, labelField, "Details")
+        VerticalLayout tablayout1 = new VerticalLayout()
+        VerticalLayout tablayout2 = new VerticalLayout()
+        HorizontalLayout tablayout3 = new HorizontalLayout();
+
+        //Create Tabsheet to store each Layout and switch between layouts
+
+        WorkflowRunTab tabsheetmaker = new WorkflowRunTab()
+
+        // Add elements to Tabsheet
+
+        TabSheet tabsheet = tabsheetmaker.generatetabs(tablayout1, grid, "WorkflowBoard")
+        tabsheetmaker.generatetabs(tablayout2, select, "Names")
+        tabsheetmaker.generatetabs(tablayout3, labelField, "Template")
 
         this.addComponent(tabsheet)
-
-
-
-
 
     }
 
